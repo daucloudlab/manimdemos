@@ -153,3 +153,12 @@ class AnimateMethodDemo(Scene):
         self.play(VGroup(s, c).animate(run_time=3).arrange(RIGHT, buff=1))
         self.play(c.animate(rate_funct=linear).shift(RIGHT).scale(2))
 
+class UpdaterDemo(Scene):
+    def construct(self):
+        red_dot = Dot(color=RED).shift(RIGHT)
+        pointer = Arrow(ORIGIN, RIGHT).next_to(red_dot, LEFT)
+        pointer.add_updater(lambda mobj: mobj.next_to(red_dot, LEFT))
+
+        self.play(Create(red_dot), Create(pointer))
+        self.play(red_dot.animate.shift(3*UP+5*RIGHT).scale(2), run_time=3)
+
