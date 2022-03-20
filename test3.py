@@ -162,3 +162,39 @@ class UpdaterDemo(Scene):
         self.play(Create(red_dot), Create(pointer))
         self.play(red_dot.animate.shift(3*UP+5*RIGHT).scale(2), run_time=3)
 
+class ValueTrackerDemo(Scene):
+    def construct(self):
+        line = NumberLine(x_range = [-5, 5])
+        position = ValueTracker(0)
+        pointer = Vector(DOWN).next_to(line, UP)
+        self.add(line, pointer)
+
+        pointer.add_updater(lambda mobj:mobj.next_to(line.number_to_point(position.get_value()), UP))
+        
+        self.wait()
+        self.play(position.animate.set_value(4))
+        self.play(position.animate.set_value(-2))
+
+class ValueTrackerPlot(Scene):
+    def construct(self):
+        a = ValueTracker(1)
+        ax = Axes(x_range=[-2, 2, 1], y_range = [-8.5, 8.5, 1], x_length = 4, y_length = 6)
+        parabola = ax.plot(lambda x : x**2, color = RED)
+        parabola.add_updater(
+            lambda mob:mob.become(ax.plot(lambda x: a.get_value()*x**2, color=RED))
+        )
+
+        a_number = DecimalNumber(
+            a.get_value(),
+            color=RED,
+            num_decimal_places=3,
+            show_ellipsis=True
+        )
+        a_number.add_updater(
+            lambda mob:mob.set_value(a.get_value()).next_to(parabola, RIGHT)
+        )
+
+        self.add(ax, parabola, a_number)
+        self.play(a.animate(run_time=5).set_value(2))
+        self.play(a.animate.set_value(-2))
+        self.play(a.animate.set_value(1))
