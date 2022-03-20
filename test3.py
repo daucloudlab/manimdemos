@@ -99,3 +99,20 @@ class CriticalPoints(Scene):
         s = Square(color = RED, fill_opacity = 0.5)
         s.move_to([1,0,0], aligned_edge=LEFT)
         self.add(s)
+
+class GroupingDemo(Scene):
+    def construct(self):
+        red_dot = Dot(color = RED)
+        yellow_dot = Dot(color = YELLOW).next_to(red_dot, RIGHT)
+        blue_dot = Dot(color = BLUE).next_to(red_dot, DOWN)
+        dot_groups = VGroup(red_dot, yellow_dot, blue_dot)
+        dot_groups.to_edge(RIGHT)
+        self.add(dot_groups)
+
+        circles = VGroup(*[Circle(radius=0.2) for _ in range(10)])
+        circles.arrange(UP)
+        self.add(circles)
+
+        stars = VGroup(*[Star(color=YELLOW, fill_opacity=0.5).scale(0.2) for _ in range(20)])
+        stars.arrange_in_grid(4, 5, buff=0.2).to_edge(LEFT)
+        self.add(stars)
