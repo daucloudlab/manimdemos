@@ -56,3 +56,46 @@ class UsingBraces(Scene):
         self.add(eq1A, eq1B, eq1C)
         self.add(eq2A, eq2B, eq2C)
         self.play(GrowFromCenter(braces),Write(eq_text))
+
+class PositioningDemo(Scene):
+    def construct(self):
+        plane = NumberPlane()
+
+        #next_to
+        red_dot = Dot(color=RED)
+        green_dot = Dot(color=GREEN)
+        green_dot.next_to(red_dot, RIGHT+UP)
+
+        #shift
+        s = Square(color = ORANGE)
+        s.shift(2*UP + 4*RIGHT)
+
+        #move_to
+        c = Circle(color = PURPLE)
+        c.move_to([-3,-2,0])
+
+        #align_to
+        c2 = Circle(radius = 0.5, color = RED, fill_opacity=0.5)
+        c3 = c2.copy().set_color(YELLOW)
+        c4 = c2.copy().set_color(ORANGE)
+        c2.align_to(s, UP)
+        c3.align_to(s, RIGHT)
+        c4.align_to(s, UP+RIGHT)
+
+        self.add(plane)
+        self.add(red_dot, green_dot)
+        self.add(s)
+        self.add(c)
+        self.add(c2,c3,c4)
+
+class CriticalPoints(Scene):
+    def construct(self):
+        c = Circle(color = GREEN, fill_opacity = 0.5)
+        self.add(c)
+
+        for d in [[0,0,0], UP, UR, RIGHT, DR, DOWN, DL, LEFT, UL]:
+            self.add(Cross(scale_factor=0.2).move_to(c.get_critical_point(d)))
+
+        s = Square(color = RED, fill_opacity = 0.5)
+        s.move_to([1,0,0], aligned_edge=LEFT)
+        self.add(s)
