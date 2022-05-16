@@ -72,3 +72,66 @@ class BooleanOperations(Scene):
         self.play(d.animate.scale(0.3).next_to(u, LEFT, buff = difference_text.height*3.5))
         difference_text.next_to(d, UP)
         self.play(FadeIn(difference_text))
+
+
+class PointMovingOnShapes1(Scene):
+    def construct(self):
+        circle = Circle(radius = 1, color = BLUE)
+        dot = Dot()
+        dot2 = dot.copy().shift(RIGHT)
+        self.add(dot)
+
+        line = Line([3, 0, 0],[5, 0, 0])
+        self.add(line)
+
+        self.play(GrowFromCenter(circle))
+        self.play(Transform(dot, dot2))
+        self.play(MoveAlongPath(dot, circle), run_time = 2, rate_func = linear)
+        self.play(Rotating(dot, about_point=[2,0,0]), run_time = 1.5)
+        self.wait()
+
+class PointMovingOnShapes2(Scene):
+    def construct(self):
+        rect = Square(side_length = 2, color = BLUE)
+        top_of_rect = rect.get_boundary_point(UP)
+        
+        dot = Dot(color=ORANGE).shift(top_of_rect)
+        self.play(GrowFromCenter(rect))
+        self.add(dot)
+        self.play(MoveAlongPath(dot, rect), run_time = 3, rate_func=linear)
+        self.play(dot.animate.move_to([0,1,0]))
+
+class PointMovingOnShapes3(Scene):
+    def construct(self):
+        # constants
+        STOPS = [.25, .5, .75, 1.0]
+
+        # make mobs
+        path = Ellipse(color=WHITE).scale(5)
+        tracker = ValueTracker(0)
+        square = Square(color=RED).scale(.5).move_to(path.point_from_proportion(0))
+        square.add_updater(
+            lambda m: m.move_to(path.point_from_proportion(tracker.get_value()))
+            )
+
+        # animate mobs
+        self.add(path, square)
+
+        for stop in STOPS:
+            # move to next position
+            self.play(
+                tracker.animate.set_value(stop),
+                run_time=2.0, rate_func=linear
+                )
+            # pause, do something, pause
+            self.wait(.5)
+            self.play(
+                Rotate(square, 4*PI),
+                rate_func=linear,
+                run_time=2.0,
+                )
+            self.wait(.5)
+
+        # done! wait and exit
+        self.wait(2)
+        
