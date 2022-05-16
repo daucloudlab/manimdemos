@@ -30,3 +30,12 @@ class BraceAnnotation(Scene):
         b2 = Brace(line, direction=line.copy().rotate(PI/2).get_unit_vector())
         b2_text = b2.get_tex("x-x_1")
         self.add(dot1, dot2, line, b1, b1_text, b2, b2_text)
+
+class VectorArrow(Scene):
+    def construct(self):
+        dot = Dot(ORIGIN)
+        arrow = Arrow(ORIGIN, [2,2,0], buff=0)
+        numberplane = NumberPlane()
+        origin_text = Text("(0,0)").next_to(dot, DOWN)
+        tip_text = Text("(2,2)").next_to(arrow.get_end(), UP)
+        self.add(numberplane, dot, arrow, origin_text, tip_text)
