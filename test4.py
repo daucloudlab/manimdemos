@@ -18,3 +18,15 @@ class ManimCELogo(Scene):
         logo.move_to(ORIGIN)
 
         self.add(logo)
+
+class BraceAnnotation(Scene):
+    def construct(self):
+        dot1 = Dot([-2, -1, 0])
+        dot2 = Dot([2, 1, 0])
+        line = Line(start=dot1.get_center(), end = dot2.get_center()).set_color(ORANGE)
+        b1 = Brace(line)
+        b1_text = b1.get_text("Horizontal distance")
+        
+        b2 = Brace(line, direction=line.copy().rotate(PI/2).get_unit_vector())
+        b2_text = b2.get_tex("x-x_1")
+        self.add(dot1, dot2, line, b1, b1_text, b2, b2_text)
