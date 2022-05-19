@@ -265,3 +265,32 @@ class SinCosFunctionPlot(Scene):
 
 
 
+class ArgMinExample(Scene):
+    def construct(self):
+        ax = Axes(
+            x_range=[0, 10],
+            y_range=[0, 100, 10],
+            axis_config={"include_tip":False}
+        )
+        label = ax.get_axis_labels(x_label = "x", y_label = "f(x)")
+
+        t = ValueTracker(0)
+
+        def func(x):
+            return 2 * (x-5)**2
+
+        graph = ax.plot(func, color = MAROON)
+
+        initial_point = [ax.coords_to_point(t.get_value(), func(t.get_value()))]
+        # initial_point = [ax.i2gp(t.get_value(), func)]
+        dot = Dot(initial_point)
+
+        dot.add_updater(lambda x : x.move_to(ax.c2p(t.get_value(), func(t.get_value()))))
+        # dot.add_updater(lambda x : x.move_to(ax.i2gp(t.get_value(), func)))
+
+        x_space = np.linspace(*ax.x_range[:2], 100)
+        minimum_index = func(x_space).argmin()
+
+        self.add(ax, label, graph, dot)
+        self.play(t.animate.set_value(x_space[minimum_index]))
+        self.wait()
