@@ -384,3 +384,17 @@ class ChangingCameraWidthAndRestore(MovingCameraScene):
         self.wait(0.5)
 
         self.play(Restore(self.camera.frame))
+
+class MovingCameraCenter(MovingCameraScene):
+    def construct(self):
+        s = Square(color = RED, fill_opacity = 0.5).move_to(2 * LEFT)
+        t = Triangle(color = GREEN, fill_opacity = 0.5).move_to(2 * RIGHT)
+        
+        self.add(s, t)
+
+        self.wait()
+
+        self.play(self.camera.frame.animate.move_to(s))
+        self.wait()
+        self.play(self.camera.frame.animate.move_to(t))
+        self.wait()
